@@ -315,7 +315,66 @@
 .userGrid { grid-template-columns: 1.4fr 0.9fr 0.9fr 1fr 0.6fr; }
 
 /* Order Table */
-.orderGrid { grid-template-columns: 0.6fr 1fr 1fr 0.8fr 0.8fr 0.8fr; }
+.orderGrid { grid-template-columns: 1.4fr 0.6fr 1fr 1fr 0.8fr 0.8fr 0.8fr; }
+
+/* Order Product Cell */
+.orderProductCell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.orderThumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+  background: var(--bg-table-row);
+}
+
+.orderThumbImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 200ms ease;
+}
+
+.orderThumbImg:hover {
+  transform: scale(1.15);
+}
+
+.orderThumbPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  background: var(--bg-table-row);
+}
+
+.orderProductInfo {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.orderProductInfo strong {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.orderProductInfo span {
+  font-size: 11px;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 /* Payment Table */
 .paymentGrid { grid-template-columns: 0.6fr 1fr 1fr 0.8fr 0.8fr 1fr; }

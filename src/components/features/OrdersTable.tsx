@@ -12,6 +12,22 @@ export type OrdersTableProps = {
   token: string;
 };
 
+/** Extract the first image URL from order items' listing images */
+function getOrderImage(order: ApiRecord): string | null {
+  const items = order.items as ApiRecord[] | undefined;
+  if (!items || items.length === 0) return null;
+
+  for (const item of items) {
+    const listing = item.listing as ApiRecord | undefined;
+    if (!listing) continue;
+    const images = listing.images as string[] | undefined;
+    if (images && images.length > 0) {
+      return images[0];
+    }
+  }
+  return null;
+}
+
 export default function OrdersTable({
   orders,
   loading,
@@ -54,7 +70,7 @@ export default function OrdersTable({
       {loading && <div className={styles.loadingBar} />}
       <div className={styles.tableWrap}>
         <div className={`${styles.tableHead} ${styles.orderGrid}`}>
-          <span>ID</span><span>Buyer</span><span>Seller</span><span>Amount</span><span>Status</span><span>Date</span>
+          <span>Product</span><span>ID</span><span>Buyer</span><span>Seller</span><span>Amount</span><span>Status</span><span>Date</span>
         </div>
         {filteredOrders.length === 0 ? (
           <div className={styles.emptyState}>
@@ -67,12 +83,33 @@ export default function OrdersTable({
             const buyer = order.buyer as ApiRecord | undefined;
             const seller = order.seller as ApiRecord | undefined;
             const status = readString(order.status);
+            const imageUrl = getOrderImage(order);
+            const items = order.items as ApiRecord[] | undefined;
+            const firstListing = items && items.length > 0 ? (items[0].listing as ApiRecord | undefined) : undefined;
+
             const statusClass = status === "COMPLETED" || status === "DELIVERED" ? styles.badge
               : status === "CANCELLED" ? styles.badgeDanger
               : status === "PROCESSING" || status === "SHIPPED" ? styles.badgeInfo
               : styles.badgeWarning;
             return (
               <div className={`${styles.tableRow} ${styles.orderGrid}`} key={readNumber(order.id)}>
+                <div className={styles.orderProductCell}>
+                  <div className={styles.orderThumb}>
+                    {imageUrl ? (
+                      <img 
+                        src={imageUrl} 
+                        alt={readString(firstListing?.title, "Product")}
+                        className={styles.orderThumbImg}
+                      />
+                    ) : (
+                      <div className={styles.orderThumbPlaceholder}>📦</div>
+                    )}
+                  </div>
+                  <div className={styles.orderProductInfo}>
+                    <strong>{readString(firstListing?.title, "Untitled")}</strong>
+                    <span>{readString(firstListing?.category)} • {readString(firstListing?.materialType)}</span>
+                  </div>
+                </div>
                 <strong>RC-{readNumber(order.id)}</strong>
                 <div>
                   <span>{readString(buyer?.name, "—")}</span>
