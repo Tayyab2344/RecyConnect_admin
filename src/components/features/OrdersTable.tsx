@@ -112,11 +112,11 @@ export default function OrdersTable({
                 </div>
                 <strong>RC-{readNumber(order.id)}</strong>
                 <div>
-                  <span>{readString(buyer?.name, "—")}</span>
+                  <span>{readString(buyer?.name || buyer?.businessName || buyer?.companyName, "—")}</span>
                   <div style={{ fontSize: "11px", color: "var(--text-dim)" }}>{readString(buyer?.role)}</div>
                 </div>
                 <div>
-                  <span>{readString(seller?.name, "—")}</span>
+                  <span>{readString(seller?.name || seller?.businessName || seller?.companyName, "—")}</span>
                   <div style={{ fontSize: "11px", color: "var(--text-dim)" }}>{readString(seller?.role)}</div>
                 </div>
                 <span>PKR {readNumber(order.totalAmount).toLocaleString()}</span>

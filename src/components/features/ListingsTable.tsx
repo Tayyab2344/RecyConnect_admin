@@ -75,7 +75,7 @@ export default function ListingsTable({
                   <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>{readString(listing.category)} • {readString(listing.materialType)}</div>
                 </div>
                 <div>
-                  <span>{readString(user?.name, "—")}</span>
+                  <span>{readString(user?.name || user?.businessName || user?.companyName, "—")}</span>
                   <div style={{ fontSize: "11px", color: "var(--text-dim)" }}>{readString(user?.email)}</div>
                 </div>
                 <div>
