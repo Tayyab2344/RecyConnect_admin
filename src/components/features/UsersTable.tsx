@@ -27,7 +27,7 @@ export default function UsersTable({
   const filteredUsers = users.filter((u) => {
     if (userRoleFilter && readString(u.role) !== userRoleFilter) return false;
     if (userSearch) {
-      const name = readString(u.name, "").toLowerCase();
+      const name = readString(u.name || u.businessName || u.companyName, "").toLowerCase();
       const email = readString(u.email, "").toLowerCase();
       if (!name.includes(userSearch.toLowerCase()) && !email.includes(userSearch.toLowerCase())) return false;
     }
@@ -83,7 +83,7 @@ export default function UsersTable({
             return (
               <div className={`${styles.tableRow} ${styles.userGrid}`} key={readNumber(user.id)}>
                 <div>
-                  <strong>{readString(user.name, "—")}</strong>
+                  <strong>{readString(user.name || user.businessName || user.companyName, "—")}</strong>
                   <div style={{ fontSize: "12px", color: "var(--text-dim)", marginTop: "2px" }}>{readString(user.email, "—")}</div>
                 </div>
                 <span className={styles.badgeInfo}>{readString(user.role)}</span>
