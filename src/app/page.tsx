@@ -24,6 +24,7 @@ import RatesManager from "@/components/features/RatesManager";
 import LogsTable from "@/components/features/LogsTable";
 import ComplaintsTable from "@/components/features/ComplaintsTable";
 import Observability from "@/components/features/Observability";
+import SecuritySessions from "@/components/features/SecuritySessions";
 
 export default function Home() {
   const auth = useAdminAuth();
@@ -183,6 +184,10 @@ export default function Home() {
 
         {activeSection === "observability" && (
           <Observability token={auth.token} />
+        )}
+
+        {activeSection === "security" && (
+          <SecuritySessions token={auth.token} />
         )}
       </section>
     </main>

@@ -42,7 +42,7 @@ export const emptyData: AdminData = {
   complaints: [],
 };
 
-export type Section = "dashboard" | "users" | "orders" | "payments" | "marketplace" | "logs" | "rates" | "complaints" | "observability";
+export type Section = "dashboard" | "users" | "orders" | "payments" | "marketplace" | "logs" | "rates" | "complaints" | "observability" | "security";
 
 export const navItems: { label: string; section: Section; icon: string }[] = [
   { label: "Dashboard", section: "dashboard", icon: "📊" },
@@ -52,6 +52,7 @@ export const navItems: { label: string; section: Section; icon: string }[] = [
   { label: "Marketplace", section: "marketplace", icon: "🏪" },
   { label: "Rate List", section: "rates", icon: "💰" },
   { label: "Complaints", section: "complaints", icon: "⚠️" },
+  { label: "Security & Sessions", section: "security", icon: "🛡️" },
   { label: "Logs", section: "logs", icon: "📋" },
   { label: "AI Observability", section: "observability", icon: "🤖" },
 ];

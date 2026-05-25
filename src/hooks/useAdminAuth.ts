@@ -15,6 +15,11 @@ export function useAdminAuth() {
   const [loginError, setLoginError] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
 
+  // MFA state
+  const [requiresMfa, setRequiresMfa] = useState(false);
+  const [mfaEmail, setMfaEmail] = useState("");
+  const [mfaOtp, setMfaOtp] = useState("");
+
   const handleLogout = () => {
     localStorage.removeItem("recyconnect_admin_token");
     localStorage.removeItem("recyconnect_refresh_token");
@@ -24,6 +29,9 @@ export function useAdminAuth() {
     setLoginEmail("");
     setLoginPassword("");
     setAdminName("");
+    setRequiresMfa(false);
+    setMfaEmail("");
+    setMfaOtp("");
   };
 
   const handleLogin = async (e?: React.FormEvent) => {
@@ -45,6 +53,15 @@ export function useAdminAuth() {
 
       if (!response.ok) {
         setLoginError(json?.error?.message || json?.message || "Login failed. Check your credentials.");
+        setLoginLoading(false);
+        return;
+      }
+
+      // Check if MFA is required
+      const data = json?.data ?? json;
+      if (data?.requiresMfa) {
+        setRequiresMfa(true);
+        setMfaEmail(data.email || loginEmail);
         setLoginLoading(false);
         return;
       }
@@ -76,6 +93,65 @@ export function useAdminAuth() {
       setLoginError("");
     } catch (err) {
       setLoginError(err instanceof Error ? err.message : "Connection failed. Is the backend running?");
+    }
+    setLoginLoading(false);
+  };
+
+  const handleVerifyMfa = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!mfaOtp) {
+      setLoginError("Please enter the OTP verification code.");
+      return;
+    }
+    setLoginLoading(true);
+    setLoginError("");
+
+    try {
+      const response = await fetch(`${API_BASE}/auth/verify-mfa`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: mfaEmail || loginEmail, otp: mfaOtp }),
+      });
+      const json = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        setLoginError(json?.error?.message || json?.message || "MFA verification failed.");
+        setLoginLoading(false);
+        return;
+      }
+
+      const accessToken = json?.data?.accessToken || json?.accessToken;
+      const role = json?.data?.user?.role || json?.user?.role || json?.data?.role || json?.role;
+      const name = json?.data?.user?.name || json?.user?.name || json?.data?.name || json?.name || "Admin";
+      const refreshToken = json?.data?.refreshToken || json?.refreshToken;
+
+      if (role !== "admin") {
+        setLoginError(`Access denied. Admin role required.`);
+        setLoginLoading(false);
+        return;
+      }
+
+      if (!accessToken) {
+        setLoginError("No access token received from server.");
+        setLoginLoading(false);
+        return;
+      }
+
+      localStorage.setItem("recyconnect_admin_token", accessToken);
+      if (refreshToken) localStorage.setItem("recyconnect_refresh_token", refreshToken);
+      localStorage.setItem("recyconnect_admin_name", name);
+
+      setToken(accessToken);
+      setAdminName(name);
+      setIsAuthenticated(true);
+      setRequiresMfa(false);
+      setLoginEmail("");
+      setLoginPassword("");
+      setMfaEmail("");
+      setMfaOtp("");
+      setLoginError("");
+    } catch (err) {
+      setLoginError(err instanceof Error ? err.message : "MFA verification error.");
     }
     setLoginLoading(false);
   };
@@ -120,7 +196,13 @@ export function useAdminAuth() {
     setShowPassword,
     loginError,
     loginLoading,
+    requiresMfa,
+    setRequiresMfa,
+    mfaEmail,
+    mfaOtp,
+    setMfaOtp,
     handleLogin,
+    handleVerifyMfa,
     handleLogout
   };
 }
