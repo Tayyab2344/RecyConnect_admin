@@ -23,6 +23,7 @@ import ListingsTable from "@/components/features/ListingsTable";
 import RatesManager from "@/components/features/RatesManager";
 import LogsTable from "@/components/features/LogsTable";
 import ComplaintsTable from "@/components/features/ComplaintsTable";
+import Observability from "@/components/features/Observability";
 
 export default function Home() {
   const auth = useAdminAuth();
@@ -178,6 +179,10 @@ export default function Home() {
             rates={data.rates} loading={loading}
             loadAdminData={loadAdminData} token={auth.token}
           />
+        )}
+
+        {activeSection === "observability" && (
+          <Observability token={auth.token} />
         )}
       </section>
     </main>
