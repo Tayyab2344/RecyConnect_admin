@@ -1,6 +1,6 @@
 import { readString } from "./utils";
 
-export const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://recy-connect-backend.vercel.app/api";
+export const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://recyconnect-backend.onrender.com/api";
 
 export async function fetchJson(path: string, token: string) {
   const response = await fetch(`${API_BASE}${path}`, {
