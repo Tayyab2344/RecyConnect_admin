@@ -11,6 +11,12 @@ export type DashboardStats = {
   payments?: Record<string, { count?: number; amount?: number }>;
   orders?: { total?: number; completed?: number; cancelled?: number };
   alerts?: { openDisputes?: number; suspendedUsers?: number; cancelledOrders?: number };
+  analytics?: {
+    day?: { buyValue?: number; sellValue?: number; volume?: number };
+    week?: { buyValue?: number; sellValue?: number; volume?: number };
+    month?: { buyValue?: number; sellValue?: number; volume?: number };
+    year?: { buyValue?: number; sellValue?: number; volume?: number };
+  };
 };
 
 export type RateItem = {
