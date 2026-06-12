@@ -243,7 +243,7 @@ export default function Dashboard({ data }: DashboardProps) {
 
           {/* Visual Data Comparison & Demographics */}
           <section className={styles.contentGrid}>
-            <article className={styles.panel} style={{ background: "linear-gradient(180deg, var(--bg-card) 0%, rgba(20,24,34,0.3) 100%)" }}>
+            <article className={styles.panel} style={{ background: "linear-gradient(180deg, var(--bg-card) 0%, var(--bg) 100%)" }}>
               <div className={styles.panelHeader} style={{ padding: 0, border: "none" }}>
                 <div>
                   <p className={styles.eyebrow}>ERP Value Analysis</p>

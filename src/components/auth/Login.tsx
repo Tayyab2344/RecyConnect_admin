@@ -66,7 +66,7 @@ export default function Login({
   if (requiresMfa) {
     return (
       <div className={styles.loginPage}>
-        <div className={styles.loginCard} style={{ backdropFilter: "blur(20px)", background: "rgba(26, 31, 46, 0.7)", border: "1px solid rgba(255, 255, 255, 0.08)" }}>
+        <div className={styles.loginCard} style={{ backdropFilter: "blur(20px)", background: "rgba(255, 255, 255, 0.8)", border: "1px solid var(--border)" }}>
           <div className={styles.loginBrand}>
             <img 
               src="/app_ico.png" 
