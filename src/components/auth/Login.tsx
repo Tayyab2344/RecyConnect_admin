@@ -43,7 +43,17 @@ export default function Login({
       <div className={styles.loginPage}>
         <div className={styles.loginCard} style={{ textAlign: "center" }}>
           <div className={styles.loginBrand}>
-            <span className={styles.loginBrandMark}>RC</span>
+            <img 
+              src="/app_ico.png" 
+              alt="RecyConnect Logo" 
+              style={{ 
+                width: "44px", 
+                height: "44px", 
+                borderRadius: "10px", 
+                objectFit: "contain",
+                boxShadow: "0 4px 12px -2px rgba(48, 217, 139, 0.3)" 
+              }} 
+            />
             <div><strong>RecyConnect</strong><span>Admin Panel</span></div>
           </div>
           <div className={styles.loadingBar} />
@@ -58,7 +68,17 @@ export default function Login({
       <div className={styles.loginPage}>
         <div className={styles.loginCard} style={{ backdropFilter: "blur(20px)", background: "rgba(26, 31, 46, 0.7)", border: "1px solid rgba(255, 255, 255, 0.08)" }}>
           <div className={styles.loginBrand}>
-            <span className={styles.loginBrandMark} style={{ background: "linear-gradient(135deg, var(--purple), var(--accent))" }}>RC</span>
+            <img 
+              src="/app_ico.png" 
+              alt="RecyConnect Logo" 
+              style={{ 
+                width: "44px", 
+                height: "44px", 
+                borderRadius: "10px", 
+                objectFit: "contain",
+                boxShadow: "0 4px 12px -2px rgba(48, 217, 139, 0.3)" 
+              }} 
+            />
             <div><strong>RecyConnect</strong><span>Security Shield</span></div>
           </div>
 
@@ -122,7 +142,17 @@ export default function Login({
     <div className={styles.loginPage}>
       <div className={styles.loginCard}>
         <div className={styles.loginBrand}>
-          <span className={styles.loginBrandMark}>RC</span>
+          <img 
+            src="/app_ico.png" 
+            alt="RecyConnect Logo" 
+            style={{ 
+              width: "44px", 
+              height: "44px", 
+              borderRadius: "10px", 
+              objectFit: "contain",
+              boxShadow: "0 4px 12px -2px rgba(48, 217, 139, 0.3)" 
+            }} 
+          />
           <div><strong>RecyConnect</strong><span>Admin Panel</span></div>
         </div>
 
