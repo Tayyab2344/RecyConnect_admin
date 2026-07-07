@@ -56,10 +56,12 @@ export default function OrdersTable({
           >
             <option value="">All Status</option>
             <option value="CREATED">Created</option>
-            <option value="CONFIRMED">Confirmed</option>
             <option value="PENDING">Pending</option>
-            <option value="PROCESSING">Processing</option>
-            <option value="SHIPPED">Shipped</option>
+            <option value="CONFIRMED">Confirmed</option>
+            <option value="WAREHOUSE_ASSIGNED">Warehouse Assigned</option>
+            <option value="COLLECTOR_ASSIGNED">Collector Assigned</option>
+            <option value="COLLECTOR_ACCEPTED">Collector Accepted</option>
+            <option value="IN_TRANSIT">In Transit</option>
             <option value="DELIVERED">Delivered</option>
             <option value="COMPLETED">Completed</option>
             <option value="CANCELLED">Cancelled</option>
@@ -89,7 +91,7 @@ export default function OrdersTable({
 
             const statusClass = status === "COMPLETED" || status === "DELIVERED" ? styles.badge
               : status === "CANCELLED" ? styles.badgeDanger
-              : status === "PROCESSING" || status === "SHIPPED" ? styles.badgeInfo
+              : ["COLLECTOR_ASSIGNED", "COLLECTOR_ACCEPTED", "IN_TRANSIT", "WAREHOUSE_ASSIGNED"].includes(status) ? styles.badgeInfo
               : styles.badgeWarning;
             return (
               <div className={`${styles.tableRow} ${styles.orderGrid}`} key={readNumber(order.id)}>

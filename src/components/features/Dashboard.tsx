@@ -406,10 +406,12 @@ export default function Dashboard({ data }: DashboardProps) {
             >
               <option value="">All Statuses</option>
               <option value="CREATED">Created</option>
-              <option value="CONFIRMED">Confirmed</option>
               <option value="PENDING">Pending</option>
-              <option value="PROCESSING">Processing</option>
-              <option value="SHIPPED">Shipped</option>
+              <option value="CONFIRMED">Confirmed</option>
+              <option value="WAREHOUSE_ASSIGNED">Warehouse Assigned</option>
+              <option value="COLLECTOR_ASSIGNED">Collector Assigned</option>
+              <option value="COLLECTOR_ACCEPTED">Collector Accepted</option>
+              <option value="IN_TRANSIT">In Transit</option>
               <option value="DELIVERED">Delivered</option>
               <option value="COMPLETED">Completed</option>
               <option value="CANCELLED">Cancelled</option>
@@ -460,11 +462,13 @@ export default function Dashboard({ data }: DashboardProps) {
                     <div>
                       <span 
                         className={
-                          order.status === "COMPLETED" 
+                          order.status === "COMPLETED" || order.status === "DELIVERED"
                             ? styles.badge 
                             : order.status === "CANCELLED" 
                               ? styles.badgeDanger 
-                              : styles.badgeWarning
+                              : ["COLLECTOR_ASSIGNED", "COLLECTOR_ACCEPTED", "IN_TRANSIT", "WAREHOUSE_ASSIGNED"].includes(order.status)
+                                ? styles.badgeInfo
+                                : styles.badgeWarning
                         }
                         style={{ fontSize: "9px", padding: "2px 6px" }}
                       >
