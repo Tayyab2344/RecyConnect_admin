@@ -13,11 +13,6 @@ type Timeframe = "day" | "week" | "month" | "year";
 
 export default function Dashboard({ data }: DashboardProps) {
   const [timeframe, setTimeframe] = useState<Timeframe>("month");
-  const [viewMode, setViewMode] = useState<"analytics" | "spreadsheet">("analytics");
-  
-  // Spreadsheet filter states
-  const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
 
   const dashboard = data.dashboard ?? {};
   const analytics = dashboard.analytics ?? {};
@@ -96,47 +91,7 @@ export default function Dashboard({ data }: DashboardProps) {
     }, { total: 0, parts: [] as string[] })
     .parts.join(", ")})`;
 
-  // ERP CSV exporter
-  const handleExportCSV = () => {
-    const headers = ["Order ID", "Date", "Buyer", "Seller", "Delivery Method", "Weight (kg)", "Total Amount (PKR)", "Status"];
-    const rows = (data.orders || []).map((order: any) => [
-      order.id,
-      new Date(order.createdAt).toLocaleDateString(),
-      order.buyer?.name || "N/A",
-      order.seller?.name || "N/A",
-      order.deliveryMethod || "N/A",
-      order.items?.[0]?.quantity || 0,
-      order.totalAmount || 0,
-      order.status
-    ]);
 
-    const csvContent = "data:text/csv;charset=utf-8," 
-      + [headers.join(","), ...rows.map(e => e.map(val => `"${val}"`).join(","))].join("\n");
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `RecyConnect_ERP_Orders_${new Date().toISOString().split('T')[0]}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  // ERP PDF printer
-  const handleExportPDF = () => {
-    window.print();
-  };
-
-  // Spreadsheet filter logic
-  const filteredOrders = (data.orders || []).filter((order: any) => {
-    const buyerName = (order.buyer?.name || "").toLowerCase();
-    const sellerName = (order.seller?.name || "").toLowerCase();
-    const matchesSearch = buyerName.includes(searchQuery.toLowerCase()) || sellerName.includes(searchQuery.toLowerCase());
-    const matchesStatus = statusFilter === "" || order.status === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
-
-  const totalFilteredWeight = filteredOrders.reduce((sum, order: any) => sum + (order.items?.[0]?.quantity || 0), 0);
-  const totalFilteredValue = filteredOrders.reduce((sum, order: any) => sum + (order.totalAmount || 0), 0);
 
   return (
     <>
@@ -147,46 +102,9 @@ export default function Dashboard({ data }: DashboardProps) {
             <h2 style={{ fontSize: "30px", fontWeight: 900, letterSpacing: "-0.5px" }}>RecyConnect ERP Dashboard</h2>
             <p style={{ marginTop: "4px" }}>Monitor recycling transactions, user accounts, system metrics, and waste throughput.</p>
           </div>
-          
-          <div style={{ display: "flex", gap: "10px", background: "var(--bg-input)", padding: "4px", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)" }}>
-            <button 
-              onClick={() => setViewMode("analytics")}
-              style={{
-                background: viewMode === "analytics" ? "var(--bg-card)" : "transparent",
-                border: "none",
-                color: viewMode === "analytics" ? "var(--accent)" : "var(--text-muted)",
-                padding: "8px 16px",
-                borderRadius: "var(--radius-sm)",
-                fontSize: "13px",
-                fontWeight: 600,
-                cursor: "pointer",
-                transition: "all var(--transition)"
-              }}
-            >
-              📊 Analytics
-            </button>
-            <button 
-              onClick={() => setViewMode("spreadsheet")}
-              style={{
-                background: viewMode === "spreadsheet" ? "var(--bg-card)" : "transparent",
-                border: "none",
-                color: viewMode === "spreadsheet" ? "var(--accent)" : "var(--text-muted)",
-                padding: "8px 16px",
-                borderRadius: "var(--radius-sm)",
-                fontSize: "13px",
-                fontWeight: 600,
-                cursor: "pointer",
-                transition: "all var(--transition)"
-              }}
-            >
-              📋 ERP Spreadsheet
-            </button>
-          </div>
         </div>
       </section>
 
-      {viewMode === "analytics" ? (
-        <>
           {/* Timeline Period Selector */}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "4px" }}>
             <h3 style={{ fontSize: "18px", fontWeight: 800, letterSpacing: "-0.2px" }}>Financial Analytics</h3>
@@ -369,125 +287,6 @@ export default function Dashboard({ data }: DashboardProps) {
               )}
             </article>
           </section>
-        </>
-      ) : (
-        /* ERP SPREADSHEET MODE */
-        <article className={styles.tablePanel} style={{ padding: "20px", borderRadius: "var(--radius-lg)" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px", marginBottom: "20px" }}>
-            <div>
-              <p className={styles.eyebrow}>Spreadsheet Mode</p>
-              <h3 style={{ fontSize: "18px", fontWeight: 800 }}>RecyConnect Active Order Ledger</h3>
-            </div>
-            
-            <div style={{ display: "flex", gap: "10px" }}>
-              <button onClick={handleExportCSV} className={`${styles.btn} ${styles.btnSmall}`} style={{ borderColor: "var(--accent)", color: "var(--accent)" }}>
-                📥 Export CSV Spreadsheet
-              </button>
-              <button onClick={handleExportPDF} className={`${styles.btn} ${styles.btnSmall}`} style={{ borderColor: "var(--purple)", color: "var(--purple)" }}>
-                🖨️ Print Executive Report
-              </button>
-            </div>
-          </div>
-
-          {/* Filtering row */}
-          <div className={styles.searchBar} style={{ marginBottom: "18px", paddingBottom: "18px", borderBottom: "1px solid var(--border)" }}>
-            <input 
-              type="text" 
-              placeholder="Search Buyer or Seller..." 
-              className={styles.searchInput}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              style={{ flex: 1, maxWidth: "320px" }}
-            />
-            <select 
-              className={styles.filterSelect}
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-            >
-              <option value="">All Statuses</option>
-              <option value="CREATED">Created</option>
-              <option value="PENDING">Pending</option>
-              <option value="CONFIRMED">Confirmed</option>
-              <option value="WAREHOUSE_ASSIGNED">Warehouse Assigned</option>
-              <option value="COLLECTOR_ASSIGNED">Collector Assigned</option>
-              <option value="COLLECTOR_ACCEPTED">Collector Accepted</option>
-              <option value="IN_TRANSIT">In Transit</option>
-              <option value="DELIVERED">Delivered</option>
-              <option value="COMPLETED">Completed</option>
-              <option value="CANCELLED">Cancelled</option>
-            </select>
-
-            <div style={{ marginLeft: "auto", fontSize: "13px", color: "var(--text-muted)", display: "flex", gap: "16px" }}>
-              <span>Ledger Count: <strong style={{ color: "var(--text)" }}>{filteredOrders.length}</strong></span>
-              <span>Weight: <strong style={{ color: "var(--warning)" }}>{totalFilteredWeight.toLocaleString()} kg</strong></span>
-              <span>Amount: <strong style={{ color: "var(--accent)" }}>PKR {totalFilteredValue.toLocaleString()}</strong></span>
-            </div>
-          </div>
-
-          {/* Grid spreadsheet */}
-          <div className={styles.tableWrap}>
-            <div className={styles.tableHead} style={{ gridTemplateColumns: "0.8fr 1fr 1.5fr 1.5fr 1.5fr 1fr 1.2fr 1fr" }}>
-              <div>ID</div>
-              <div>Date</div>
-              <div>Seller</div>
-              <div>Buyer</div>
-              <div>Delivery Method</div>
-              <div>Weight</div>
-              <div>Amount</div>
-              <div>Status</div>
-            </div>
-
-            {filteredOrders.length > 0 ? (
-              filteredOrders.map((order: any) => {
-                const orderWeight = order.items?.[0]?.quantity || 0;
-                return (
-                  <div 
-                    className={styles.tableRow} 
-                    key={order.id} 
-                    style={{ 
-                      gridTemplateColumns: "0.8fr 1fr 1.5fr 1.5fr 1.5fr 1fr 1.2fr 1fr",
-                      fontFamily: "var(--font-inter), sans-serif",
-                      fontSize: "13px"
-                    }}
-                  >
-                    <div style={{ color: "var(--accent)", fontWeight: 700 }}>#{order.id}</div>
-                    <div>{new Date(order.createdAt).toLocaleDateString()}</div>
-                    <div style={{ fontWeight: 600 }}>{order.seller?.name || "N/A"}</div>
-                    <div style={{ fontWeight: 600 }}>{order.buyer?.name || "N/A"}</div>
-                    <div style={{ color: "var(--text-dim)" }}>
-                      {order.deliveryMethod === "WAREHOUSE_COLLECTOR_SERVICE" ? "🚚 Collector" : "📦 Self Trans."}
-                    </div>
-                    <div style={{ fontWeight: 600, color: "var(--warning)" }}>{orderWeight} kg</div>
-                    <div style={{ fontWeight: 700 }}>PKR {order.totalAmount?.toLocaleString()}</div>
-                    <div>
-                      <span 
-                        className={
-                          order.status === "COMPLETED" || order.status === "DELIVERED"
-                            ? styles.badge 
-                            : order.status === "CANCELLED" 
-                              ? styles.badgeDanger 
-                              : ["COLLECTOR_ASSIGNED", "COLLECTOR_ACCEPTED", "IN_TRANSIT", "WAREHOUSE_ASSIGNED"].includes(order.status)
-                                ? styles.badgeInfo
-                                : styles.badgeWarning
-                        }
-                        style={{ fontSize: "9px", padding: "2px 6px" }}
-                      >
-                        {order.status}
-                      </span>
-                    </div>
-                  </div>
-                );
-              })
-            ) : (
-              <div className={styles.emptyState}>
-                <span>📭</span>
-                <strong>No active matching orders in the ledger</strong>
-                <p>Try clearing your search filters or status tags.</p>
-              </div>
-            )}
-          </div>
-        </article>
-      )}
     </>
   );
 }
