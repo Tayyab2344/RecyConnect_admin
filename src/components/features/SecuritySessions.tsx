@@ -135,14 +135,14 @@ export default function SecuritySessions({ token }: SecuritySessionsProps) {
     <div style={{ display: "flex", flexDirection: "column", gap: "24px", padding: "12px 0 32px 0" }}>
       {/* Hero Header */}
       <section className={styles.hero} style={{ marginBottom: 0 }}>
-        <p className={styles.eyebrow}>Enterprise Governance Module</p>
+        <p className={styles.eyebrow}>Access & Security Control</p>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <h2>Security & Session Governance</h2>
+          <h2>Security & Platform Sessions</h2>
           <button className={styles.btn} onClick={() => void loadData()} disabled={loading}>
             {loading ? "Refreshing..." : "🔄 Refresh Telemetry"}
           </button>
         </div>
-        <p>Monitor active administrator concurrent logins, review security threat logs, and override accounts.</p>
+        <p>Monitor active platform user sessions, review security audit logs, and manage account credentials.</p>
       </section>
 
       {feedback && (
@@ -169,14 +169,14 @@ export default function SecuritySessions({ token }: SecuritySessionsProps) {
           <div className={styles.panelHeader} style={{ padding: 0, border: "none", marginBottom: "16px" }}>
             <div>
               <p className={styles.eyebrow}>Active logins</p>
-              <h3>Concurrent Admin Sessions ({sessions.length})</h3>
+              <h3>Concurrent Platform Sessions ({sessions.length})</h3>
             </div>
-            <span className={styles.badge} style={{ background: "rgba(48, 217, 139, 0.2)", color: "#30d98b" }}>Max 3 Limits Active</span>
+            <span className={styles.badge} style={{ background: "rgba(48, 217, 139, 0.2)", color: "#30d98b" }}>Max 3 Sessions Limit</span>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "12px", maxHeight: "400px", overflowY: "auto" }}>
             {sessions.length === 0 ? (
-              <div className={styles.emptyState}>No active administrative sessions monitored.</div>
+              <div className={styles.emptyState}>No active platform user sessions monitored.</div>
             ) : (
               sessions.map((session) => (
                 <div 
@@ -323,8 +323,8 @@ export default function SecuritySessions({ token }: SecuritySessionsProps) {
       <section className={styles.tablePanel}>
         <div className={styles.panelHeader}>
           <div>
-            <p className={styles.eyebrow}>Anomaly audit logs</p>
-            <h3>Security Governance Audit Log</h3>
+            <p className={styles.eyebrow}>Security event logs</p>
+            <h3>Security & Governance Audit Log</h3>
           </div>
           <span className={styles.badgeDanger}>{securityLogs.length} Security Events Logs</span>
         </div>
@@ -338,7 +338,7 @@ export default function SecuritySessions({ token }: SecuritySessionsProps) {
           </div>
 
           {securityLogs.length === 0 ? (
-            <div className={styles.emptyState}>No administrative threat alerts or security logs recorded.</div>
+            <div className={styles.emptyState}>No security events or login alerts recorded.</div>
           ) : (
             securityLogs.map((log: any) => (
               <div 

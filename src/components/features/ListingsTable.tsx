@@ -65,6 +65,10 @@ export default function ListingsTable({
               : status === "CANCELLED" ? styles.badgeDanger 
               : styles.badgeDark;
               
+            const orderItems = (listing.orderItems as ApiRecord[] | undefined) || [];
+            const soldWeight = orderItems.reduce((sum: number, item: ApiRecord) => sum + readNumber(item.quantity), 0);
+            const displayWeight = status === "SOLD" ? (soldWeight || readNumber(listing.estimatedWeight, 0)) : readNumber(listing.estimatedWeight, 0);
+
             return (
               <div className={`${styles.tableRow} ${styles.listingGrid}`} key={readNumber(listing.id)}>
                 <div>
@@ -76,7 +80,7 @@ export default function ListingsTable({
                   <div style={{ fontSize: "11px", color: "var(--text-dim)" }}>{readString(user?.email)}</div>
                 </div>
                 <div>
-                  <strong>{readNumber(listing.estimatedWeight, 0)} kg</strong>
+                  <strong>{displayWeight} kg</strong>
                   <span style={{ marginLeft: "8px", fontSize: "13px" }}>@ PKR {readNumber(listing.price)}/kg</span>
                 </div>
                 <div><span className={statusClass}>{status}</span></div>

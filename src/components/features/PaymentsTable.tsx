@@ -77,11 +77,11 @@ export default function PaymentsTable({
                   <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>Order RC-{readNumber(order?.id)}</div>
                 </div>
                 <div>
-                  <span>{readString(buyer?.name, "—")}</span>
+                  <span>{readString(buyer?.name || buyer?.businessName || buyer?.companyName, "—")}</span>
                   <div style={{ fontSize: "11px", color: "var(--text-dim)" }}>{readString(buyer?.role)}</div>
                 </div>
                 <div>
-                  <span>{readString(seller?.name, "—")}</span>
+                  <span>{readString(seller?.name || seller?.businessName || seller?.companyName, "—")}</span>
                   <div style={{ fontSize: "11px", color: "var(--text-dim)" }}>{readString(seller?.role)}</div>
                 </div>
                 <strong>PKR {readNumber(payment.amount).toLocaleString()}</strong>
