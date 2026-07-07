@@ -39,11 +39,8 @@ export default function ListingsTable({
             onChange={(e) => setListingStatusFilter(e.target.value)}
           >
             <option value="">All Status</option>
-            <option value="DRAFT">Draft</option>
-            <option value="PUBLISHED">Published</option>
-            <option value="RESERVED">Reserved</option>
+            <option value="PUBLISHED">Current</option>
             <option value="SOLD">Sold</option>
-            <option value="CANCELLED">Cancelled</option>
           </select>
           <button className={styles.btn} onClick={() => void loadAdminData()} disabled={!token || loading}>Refresh</button>
         </div>
