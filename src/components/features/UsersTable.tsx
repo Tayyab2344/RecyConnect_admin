@@ -2,6 +2,7 @@ import React from "react";
 import styles from "@/app/page.module.css";
 import { ApiRecord } from "@/types/admin";
 import { readString, readNumber, formatDate } from "@/lib/utils";
+import { Icons } from "../common/Icons";
 
 export type UsersTableProps = {
   users: ApiRecord[];
@@ -72,7 +73,7 @@ export default function UsersTable({
         </div>
         {filteredUsers.length === 0 ? (
           <div className={styles.emptyState}>
-            <span>👥</span>
+            <Icons.Users size={36} style={{ color: "var(--text-muted)", marginBottom: "8px" }} />
             <strong>No users found</strong>
             <p>No users match current filters.</p>
           </div>

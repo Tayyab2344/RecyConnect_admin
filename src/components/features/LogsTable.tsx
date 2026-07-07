@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styles from "@/app/page.module.css";
 import { ApiRecord } from "@/types/admin";
-import { readString, readNumber, formatDate } from "@/lib/utils";
+import { readString, readNumber, formatDate, unwrapArray } from "@/lib/utils";
+import { Icons } from "../common/Icons";
 
 export type LogsTableProps = {
   logs: ApiRecord[];
@@ -282,7 +283,7 @@ export default function LogsTable({
         </div>
         {filteredLogs.length === 0 ? (
           <div className={styles.emptyState}>
-            <span>📋</span>
+            <Icons.Logs size={36} style={{ color: "var(--text-muted)", marginBottom: "8px" }} />
             <strong>No audit records match filters</strong>
             <p>Try clearing your queries or adjusting the date range filters.</p>
           </div>

@@ -1,7 +1,8 @@
 import React from "react";
 import styles from "@/app/page.module.css";
 import { ApiRecord } from "@/types/admin";
-import { readString, readNumber } from "@/lib/utils";
+import { readString, readNumber, unwrapArray } from "@/lib/utils";
+import { Icons } from "../common/Icons";
 
 export type PaymentsTableProps = {
   payments: ApiRecord[];
@@ -29,8 +30,8 @@ export default function PaymentsTable({
     <section className={styles.tablePanel}>
       <div className={styles.panelHeader}>
         <div className={styles.panelHeaderInner}>
-          <p className={styles.eyebrow}>Payment Monitoring</p>
-          <h3>Transaction Records ({filteredPayments.length})</h3>
+          <p className={styles.eyebrow}>Financial Oversight</p>
+          <h3>Payments & Transactions</h3>
         </div>
         <div className={styles.panelActions}>
           <select 
@@ -39,12 +40,9 @@ export default function PaymentsTable({
             onChange={(e) => setPaymentStatusFilter(e.target.value)}
           >
             <option value="">All Status</option>
-            <option value="AUTHORIZE">Authorize</option>
-            <option value="CAPTURED">Captured</option>
-            <option value="PENDING">Pending</option>
             <option value="COMPLETED">Completed</option>
+            <option value="PENDING">Pending</option>
             <option value="FAILED">Failed</option>
-            <option value="REFUNDED">Refunded</option>
           </select>
           <button className={styles.btn} onClick={() => void loadAdminData()} disabled={!token || loading}>Refresh</button>
         </div>
@@ -56,7 +54,7 @@ export default function PaymentsTable({
         </div>
         {filteredPayments.length === 0 ? (
           <div className={styles.emptyState}>
-            <span>💳</span>
+            <Icons.Payments size={36} style={{ color: "var(--text-muted)", marginBottom: "8px" }} />
             <strong>No payments found</strong>
             <p>No payments match the current criteria.</p>
           </div>

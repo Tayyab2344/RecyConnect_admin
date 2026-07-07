@@ -3,6 +3,7 @@ import styles from "@/app/page.module.css";
 import { RateItem } from "@/types/admin";
 import { formatDate } from "@/lib/utils";
 import { postJson, deleteJson } from "@/lib/api";
+import { Icons } from "../common/Icons";
 
 export type RatesManagerProps = {
   rates: RateItem[];
@@ -83,7 +84,7 @@ export default function RatesManager({
           </div>
           {rates.length === 0 ? (
             <div className={styles.emptyState}>
-              <span>💰</span>
+              <Icons.Rates size={36} style={{ color: "var(--text-muted)", marginBottom: "8px" }} />
               <strong>No categories yet</strong>
               <p>Click &apos;+ Add Category&apos; to create your first rate.</p>
             </div>

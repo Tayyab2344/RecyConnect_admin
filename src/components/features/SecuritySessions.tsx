@@ -3,6 +3,7 @@ import styles from "@/app/page.module.css";
 import { fetchJson, postJson, putJson } from "@/lib/api";
 import { formatDate } from "@/lib/utils";
 import { ApiRecord } from "@/types/admin";
+import { Icons } from "../common/Icons";
 
 export type SecuritySessionsProps = {
   token: string;
@@ -138,8 +139,14 @@ export default function SecuritySessions({ token }: SecuritySessionsProps) {
         <p className={styles.eyebrow}>Access & Security Control</p>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <h2>Security & Platform Sessions</h2>
-          <button className={styles.btn} onClick={() => void loadData()} disabled={loading}>
-            {loading ? "Refreshing..." : "🔄 Refresh Telemetry"}
+          <button 
+            className={styles.btn} 
+            onClick={() => void loadData()} 
+            disabled={loading}
+            style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
+          >
+            <Icons.Refresh size={14} style={{ animation: loading ? "spin 1s linear infinite" : "none" }} />
+            {loading ? "Refreshing..." : "Refresh Telemetry"}
           </button>
         </div>
         <p>Monitor active platform user sessions, review security audit logs, and manage account credentials.</p>
@@ -154,10 +161,13 @@ export default function SecuritySessions({ token }: SecuritySessionsProps) {
             border: feedback.type === "success" ? "1px solid rgba(48, 217, 139, 0.3)" : "1px solid rgba(248, 81, 73, 0.3)",
             background: feedback.type === "success" ? "rgba(48, 217, 139, 0.1)" : "rgba(248, 81, 73, 0.1)",
             color: feedback.type === "success" ? "var(--accent)" : "var(--danger)",
-            fontWeight: "500"
+            fontWeight: "500",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px"
           }}
         >
-          {feedback.type === "success" ? "✅ " : "❌ "}
+          {feedback.type === "success" ? <Icons.Security size={14} /> : <Icons.Ban size={14} />}
           {feedback.message}
         </div>
       )}
@@ -204,23 +214,40 @@ export default function SecuritySessions({ token }: SecuritySessionsProps) {
                         color: "var(--danger)", 
                         border: "1px solid rgba(248, 81, 73, 0.2)",
                         fontSize: "11px",
-                        padding: "4px 8px"
+                        padding: "4px 8px",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "6px"
                       }}
                       disabled={actionLoading !== null}
                       onClick={() => void handleRevokeSession(session.id)}
                     >
-                      {actionLoading === session.id ? "Terminating..." : "Revoke Session 🚪"}
+                      {actionLoading === session.id ? "Terminating..." : (
+                        <>
+                          Revoke Session
+                          <Icons.Logout size={12} />
+                        </>
+                      )}
                     </button>
                   </div>
 
                   <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "12px", borderTop: "1px solid var(--border)", paddingTop: "8px", marginTop: "4px", fontSize: "11px", color: "var(--text-dim)" }}>
                     <div>
-                      <strong>💻 Device:</strong> {session.device}
+                      <strong style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                        <Icons.Device size={12} /> Device:
+                      </strong>{" "}
+                      {session.device}
                       <div style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{session.userAgent.substring(0, 50)}...</div>
                     </div>
                     <div>
-                      <div><strong>🌐 IP Address:</strong> {session.ip}</div>
-                      <div><strong>🔑 Sign In:</strong> {formatDate(session.createdAt)}</div>
+                      <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                        <Icons.Globe size={12} />
+                        <strong>IP Address:</strong> {session.ip}
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center", gap: "4px", marginTop: "4px" }}>
+                        <Icons.Key size={12} />
+                        <strong>Sign In:</strong> {formatDate(session.createdAt)}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -270,10 +297,14 @@ export default function SecuritySessions({ token }: SecuritySessionsProps) {
               <button
                 type="submit"
                 className={styles.btn}
-                style={{ background: "var(--primary)", color: "white", padding: "10px" }}
+                style={{ background: "var(--primary)", color: "white", padding: "10px", display: "inline-flex", alignItems: "center", gap: "6px", justifyContent: "center" }}
                 disabled={actionLoading !== null || !selectedUserForPassword || !newPassword}
               >
-                {actionLoading === "password" ? "Updating..." : "Force Reset Credentials 🔑"}
+                {actionLoading === "password" ? "Updating..." : (
+                  <>
+                    <Icons.Key size={14} /> Force Reset Credentials
+                  </>
+                )}
               </button>
             </form>
 
@@ -309,10 +340,14 @@ export default function SecuritySessions({ token }: SecuritySessionsProps) {
               <button
                 type="submit"
                 className={styles.btn}
-                style={{ background: "var(--danger)", color: "white", padding: "10px" }}
+                style={{ background: "var(--danger)", color: "white", padding: "10px", display: "inline-flex", alignItems: "center", gap: "6px", justifyContent: "center" }}
                 disabled={actionLoading !== null || !selectedUserForBan}
               >
-                {actionLoading === "ban" ? "Processing Ban..." : "Restrict & Ban User 🚫"}
+                {actionLoading === "ban" ? "Processing Ban..." : (
+                  <>
+                    <Icons.Ban size={14} /> Restrict & Ban User
+                  </>
+                )}
               </button>
             </form>
           </div>

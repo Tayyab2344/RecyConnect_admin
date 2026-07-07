@@ -9,6 +9,21 @@ export type SidebarProps = {
   handleLogout: () => void;
 };
 
+import { Icons } from "../common/Icons";
+
+const IconMap: Record<Section, React.ComponentType<{ size?: number | string; style?: React.CSSProperties }>> = {
+  dashboard: Icons.Dashboard,
+  users: Icons.Users,
+  orders: Icons.Orders,
+  payments: Icons.Payments,
+  marketplace: Icons.Marketplace,
+  rates: Icons.Rates,
+  complaints: Icons.Complaints,
+  security: Icons.Security,
+  logs: Icons.Logs,
+  observability: Icons.Observability,
+};
+
 export default function Sidebar({
   adminName,
   activeSection,
@@ -36,21 +51,33 @@ export default function Sidebar({
       </div>
 
       <nav className={styles.nav}>
-        {navItems.map((item) => (
-          <button
-            className={`${styles.navItem} ${activeSection === item.section ? styles.navItemActive : ""}`}
-            key={item.section}
-            onClick={() => setActiveSection(item.section)}
-          >
-            <span className={styles.navIcon}>{item.icon}</span>
-            {item.label}
-          </button>
-        ))}
+        {navItems.map((item) => {
+          const IconComp = IconMap[item.section];
+          return (
+            <button
+              className={`${styles.navItem} ${activeSection === item.section ? styles.navItemActive : ""}`}
+              key={item.section}
+              onClick={() => setActiveSection(item.section)}
+              style={{ display: "flex", alignItems: "center", gap: "10px" }}
+            >
+              <span className={styles.navIcon} style={{ display: "inline-flex", alignItems: "center" }}>
+                {IconComp ? <IconComp size={18} /> : null}
+              </span>
+              {item.label}
+            </button>
+          );
+        })}
       </nav>
 
       <div className={styles.sidebarFooter}>
         <span>Signed in as <strong style={{ display: "inline", color: "var(--text)" }}>{adminName}</strong></span>
-        <button className={styles.logoutBtn} onClick={handleLogout}>🚪 Sign Out</button>
+        <button 
+          className={styles.logoutBtn} 
+          onClick={handleLogout}
+          style={{ display: "inline-flex", alignItems: "center", gap: "6px", justifyContent: "center" }}
+        >
+          <Icons.Logout size={14} /> Sign Out
+        </button>
       </div>
     </aside>
   );

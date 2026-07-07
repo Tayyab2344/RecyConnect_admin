@@ -2,6 +2,7 @@ import React from "react";
 import styles from "@/app/page.module.css";
 import { ApiRecord } from "@/types/admin";
 import { readString, readNumber, formatDate } from "@/lib/utils";
+import { Icons } from "../common/Icons";
 
 export type OrdersTableProps = {
   orders: ApiRecord[];
@@ -56,13 +57,12 @@ export default function OrdersTable({
           >
             <option value="">All Status</option>
             <option value="CREATED">Created</option>
-            <option value="PENDING">Pending</option>
             <option value="CONFIRMED">Confirmed</option>
+            <option value="WAITING_FOR_DISPATCH">Waiting for Dispatch</option>
             <option value="WAREHOUSE_ASSIGNED">Warehouse Assigned</option>
             <option value="COLLECTOR_ASSIGNED">Collector Assigned</option>
-            <option value="COLLECTOR_ACCEPTED">Collector Accepted</option>
-            <option value="IN_TRANSIT">In Transit</option>
-            <option value="DELIVERED">Delivered</option>
+            <option value="DISPATCHED">Dispatched</option>
+            <option value="ARRIVED_AT_WAREHOUSE">Arrived at Warehouse</option>
             <option value="COMPLETED">Completed</option>
             <option value="CANCELLED">Cancelled</option>
           </select>
@@ -76,7 +76,7 @@ export default function OrdersTable({
         </div>
         {filteredOrders.length === 0 ? (
           <div className={styles.emptyState}>
-            <span>📦</span>
+            <Icons.Orders size={36} style={{ color: "var(--text-muted)", marginBottom: "8px" }} />
             <strong>No orders found</strong>
             <p>No orders match current filters.</p>
           </div>

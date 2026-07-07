@@ -2,6 +2,7 @@ import React from "react";
 import styles from "@/app/page.module.css";
 import { ApiRecord } from "@/types/admin";
 import { readString, readNumber, formatDate } from "@/lib/utils";
+import { Icons } from "../common/Icons";
 
 export type ListingsTableProps = {
   listings: ApiRecord[];
@@ -52,7 +53,7 @@ export default function ListingsTable({
         </div>
         {filteredListings.length === 0 ? (
           <div className={styles.emptyState}>
-            <span>🏪</span>
+            <Icons.Marketplace size={36} style={{ color: "var(--text-muted)", marginBottom: "8px" }} />
             <strong>No listings found</strong>
             <p>No listings match the current criteria.</p>
           </div>

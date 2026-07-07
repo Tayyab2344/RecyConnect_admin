@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "@/app/page.module.css";
 import { ApiRecord } from "@/types/admin";
 import { putJson } from "@/lib/api";
+import { Icons } from "../common/Icons";
 
 type ComplaintsTableProps = {
   complaints: ApiRecord[];
@@ -76,7 +77,7 @@ export default function ComplaintsTable({
         </div>
         {filteredComplaints.length === 0 ? (
           <div className={styles.emptyState}>
-            <span>📋</span>
+            <Icons.Complaints size={36} style={{ color: "var(--text-muted)", marginBottom: "8px" }} />
             <strong>No complaints found</strong>
             <p>No complaints match current filters.</p>
           </div>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "@/app/page.module.css";
 import { fetchJson, postJson } from "@/lib/api";
-import { formatDate } from "@/lib/utils";
+import { formatDate, readNumber } from "@/lib/utils";
+import { Icons } from "../common/Icons";
 
 export type ObservabilityProps = {
   token: string;
@@ -206,8 +207,14 @@ export default function Observability({ token }: ObservabilityProps) {
         <p className={styles.eyebrow}>RecyConnect AI Observability Engine</p>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <h2>Autonomous Operations & Performance Telemetry</h2>
-          <button className={styles.btn} onClick={() => void loadTelemetry()} disabled={loading}>
-            {loading ? "Refreshing..." : "🔄 Refresh Metrics"}
+          <button 
+            className={styles.btn} 
+            onClick={() => void loadTelemetry()} 
+            disabled={loading}
+            style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
+          >
+            <Icons.Refresh size={14} style={{ animation: loading ? "spin 1s linear infinite" : "none" }} />
+            {loading ? "Refreshing..." : "Refresh Metrics"}
           </button>
         </div>
       </section>
